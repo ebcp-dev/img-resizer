@@ -71,7 +71,6 @@ describe('Test resize route', done => {
       .send(testInput.image)
       .expect(200)
       .end((err, res) => {
-        console.log(res.body);
         expect(res.type).equals('image/jpeg');
         done();
       });
