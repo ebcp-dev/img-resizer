@@ -14,6 +14,7 @@
 - Passport
 - JSON Web Tokens authentication
 - Mocha, Chai
+- JSDOC Documentation
 
 ## Setup:
 

@@ -6,10 +6,9 @@
   "scripts": {
     "dev": "nodemon -w src --exec \"babel-node src/server test --presets es2015,stage-0\"",
     "build": "babel src -s -D -d dist --presets es2015,stage-0",
-    "test": "npm run build && nyc --reporter=html --reporter=text mocha --compilers js:babel-core/register",
+    "test": "npm run build && nyc --reporter=text mocha --compilers js:babel-core/register",
     "start": "node dist/server",
-    "prestart": "npm run -s build",
-    "cover": "istanbul cover _mocha"
+    "prestart": "npm run -s build"
   },
   "author": "Earl Perez",
   "license": "ISC",
