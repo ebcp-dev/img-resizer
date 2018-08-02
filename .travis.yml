@@ -7,6 +7,6 @@ install:
   - npm install
   - npm install -g codecov
 script:
-  - istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec
+  - istanbul cover ./node_modules/mocha/bin/_mocha --compilers js:babel-core/register -R spec
   - ./node_modules/.bin/codecov
   - npm test
