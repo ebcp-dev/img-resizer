@@ -32,41 +32,59 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var router = _express2.default.Router();
 
-// Validation imports
+/** Import validation. */
+/** @module src/services/resizer */
+
+/** Import dependencies. */
 
 
+/**
+ * @function post
+ * Router post function for root url.
+ * Downloads an image based on
+ * image url from request body. Uses jwt authentication
+ * and rejects unauthorized access.
+ */
 router.post('/', _passport2.default.authenticate('jwt', { session: false }), function (req, res) {
+  /** Validate request body first.  */
   var _validateRequestBody = (0, _resizer2.default)(req.body),
       errors = _validateRequestBody.errors,
       isValid = _validateRequestBody.isValid;
+  /** Return with error status if errors are found. */
+
 
   if (!isValid) {
     return res.status(400).json(errors);
   }
 
-  // Download image with axios
-  var download = function download(url) {
-    return (0, _axios2.default)({
-      method: 'get',
-      url: url,
-      responseType: 'stream'
-    }).then(function (response) {
-      return response.data;
-    });
-  };
-
-  // Get image source
+  /** Get image url from request body. */
   var imgUrl = req.body.imgUrl;
-  // Set response type to .jpg
+  /** Set response to type to image jpg. */
 
   res.type('jpg');
-  // Download image and pipe to response
+  /** Resize image then pipe it to response object. */
   download(imgUrl).then(function (response) {
     return response.pipe(transform()).pipe(res);
   });
 });
 
-// Resize image with Sharp
+/** Download function with axios.
+ * Set response type to stream for large data.
+ */
+var download = function download(url) {
+  return (0, _axios2.default)({
+    method: 'get',
+    url: url,
+    responseType: 'stream'
+  }).then(function (response) {
+    return response.data;
+  });
+};
+
+/** Transform function with Sharp.
+ * Resizes image to 50x50 pixels
+ * and returns it.
+ */
 var transform = function transform() {
   var sharpObj = (0, _sharp2.default)();
   sharpObj.resize(50, 50);

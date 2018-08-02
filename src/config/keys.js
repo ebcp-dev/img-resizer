@@ -1,3 +1,4 @@
-module.exports = {
-  secretOrKey: 'secret'
-};
+/** @module src/config/keys */
+
+/** Passport secretOrKey option */
+export const secretOrKey = 'secret';

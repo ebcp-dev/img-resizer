@@ -1,24 +1,31 @@
+/** @module src/server */
+
+/** Import express and passport dependencies. */
 import express from 'express';
 import bodyParser from 'body-parser';
 import passport from 'passport';
 import morgan from 'morgan';
 
+/** Define express variable. */
 const app = express();
+/** Define environment port variable. */
 const port = process.env.PORT || 5000;
 
-// Middleware
+/** Have express use middleware. */
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize());
 
-// Passport config
-require('./config/passport')(passport);
+/** Import and use passport config. */
+import useJwt from './config/passport';
+useJwt(passport);
 
-// API routes
+/** Define API routes. */
 app.use('/api/auth', require('./services/auth').default);
 app.use('/api/resize', require('./services/resizer').default);
 
+/** Server listen to port. */
 app.listen(port, () => console.log(`Server running on port ${port}.`));
 
 export default app;
