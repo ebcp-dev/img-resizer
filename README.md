@@ -1,6 +1,7 @@
 # A Node.js microservice that allows authenticated users to download and resize an image.
 
 - [DockerHub](https://hub.docker.com/r/ebcperez/img-resizer/)
+- [Travis CI Build](https://travis-ci.org/ebcp-dev/img-resizer/builds/411239047)
 
 ## Created with:
 
