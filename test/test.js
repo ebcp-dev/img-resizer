@@ -58,6 +58,29 @@ const testInput = {
     op: 'replace',
     path: '/foo',
     value: 'new'
+  },
+  emptyOp: {
+    obj: {
+      foo: 'bar'
+    },
+    path: '/foo',
+    value: 'new'
+  },
+  emptyPath: {
+    obj: {
+      foo: 'bar'
+    },
+    op: 'replace',
+    path: '',
+    value: 'new'
+  },
+  emptyValue: {
+    obj: {
+      foo: 'bar'
+    },
+    op: 'add',
+    path: '/foo',
+    value: ''
   }
 };
 /** Define session token to pass in to Authorization Header later. */
@@ -128,9 +151,7 @@ describe('Test resize route', done => {
     request(app)
       .post('/api/resize')
       .set('Authorization', token)
-      .send({
-        obj: testInput.jsonObj
-      })
+      .send(testInput.emptyImage)
       .expect(400)
       .end((err, res) => {
         expect(res.body.imgUrl).equals('Invalid URL.');
@@ -149,7 +170,7 @@ describe('Test resize route', done => {
         done();
       });
   });
-  /** Status 401 if unauthorized user tries to access th route.. */
+  /** Status 401 if unauthorized user tries to access the route.. */
   it('Status 401 on unauthorized user', done => {
     request(app)
       .post('/api/resize')
@@ -192,6 +213,46 @@ describe('Test jsonpatch route', done => {
       .send(testInput.jsonReplace)
       .expect(200)
       .end((err, res) => {
+        done();
+      });
+  });
+  /** Status 400 on empty op value.
+   */
+  it('Status 400 on empty op', done => {
+    request(app)
+      .post('/api/jsonpatch')
+      .set('Authorization', token)
+      .send(testInput.emptyOp)
+      .expect(400)
+      .end((err, res) => {
+        expect(res.body.op).equals('Operation is not valid.');
+        done();
+      });
+  });
+  /** Status 400 on empty path value.
+   */
+  it('Status 400 on empty path', done => {
+    request(app)
+      .post('/api/jsonpatch')
+      .set('Authorization', token)
+      .send(testInput.emptyPath)
+      .expect(400)
+      .end((err, res) => {
+        expect(res.body.path).equals('Path is required.');
+        done();
+      });
+  });
+  /** Status 400 on empty value.
+   */
+  it('Status 400 on empty value', done => {
+    request(app)
+      .post('/api/jsonpatch')
+      .set('Authorization', token)
+      .send(testInput.emptyValue)
+      .expect(400)
+      .end((err, res) => {
+        console.log(res.body);
+        expect(res.body.value).equals('Value is required.');
         done();
       });
   });

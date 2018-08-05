@@ -48,16 +48,10 @@ router.post('/', _passport2.default.authenticate('jwt', { session: false }), fun
     return res.status(400).json(errors);
   }
   /** Get json object to patch from request body. */
-  var payload = {
-    obj: req.body.obj,
+  var patched = _jsonPatch2.default.apply(req.body.obj, [{
     op: req.body.op,
     path: req.body.path,
     value: req.body.value
-  };
-  var patched = _jsonPatch2.default.apply(payload.obj, [{
-    op: payload.op,
-    path: payload.path,
-    value: payload.value
   }]);
   return res.status(200).json(patched);
 });

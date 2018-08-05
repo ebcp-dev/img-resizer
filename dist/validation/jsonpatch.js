@@ -46,13 +46,8 @@ var validateJsonPatch = function validateJsonPatch(data) {
     errors.path = 'Path is required.';
   }
 
-  /** Set path value to invalid error message if not found. */
-  if (!data.obj.path) {
-    errors.path = 'Path is not valid.';
-  }
-
   /** Set value value to required error message if empty. */
-  if (data.op === 'add' && data.op === 'replace' && data.op === 'test' && _validator2.default.isEmpty(data.value)) {
+  if ((data.op === 'add' || data.op === 'replace' || data.op === 'test') && _validator2.default.isEmpty(data.value)) {
     errors.value = 'Value is required.';
   }
 

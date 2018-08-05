@@ -26,17 +26,11 @@ router.post(
       return res.status(400).json(errors);
     }
     /** Get json object to patch from request body. */
-    const payload = {
-      obj: req.body.obj,
-      op: req.body.op,
-      path: req.body.path,
-      value: req.body.value
-    };
-    const patched = jsonpatch.apply(payload.obj, [
+    const patched = jsonpatch.apply(req.body.obj, [
       {
-        op: payload.op,
-        path: payload.path,
-        value: payload.value
+        op: req.body.op,
+        path: req.body.path,
+        value: req.body.value
       }
     ]);
     return res.status(200).json(patched);
