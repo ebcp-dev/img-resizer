@@ -29,9 +29,35 @@ const testInput = {
   emptyImage: {
     emptyUrl: ''
   },
-  reqObj: {},
+  emptyObj: {},
   downloadError: {
     invalidLink: 'https://images.pexels.com/photos/1277485/pexels-photo'
+  },
+  jsonObj: {
+    foo: 'bar'
+  },
+  jsonAdd: {
+    obj: {
+      foo: 'bar'
+    },
+    op: 'add',
+    path: '/new',
+    value: 'bar'
+  },
+  jsonRemove: {
+    obj: {
+      foo: 'bar'
+    },
+    op: 'remove',
+    path: '/foo'
+  },
+  jsonReplace: {
+    obj: {
+      foo: 'bar'
+    },
+    op: 'replace',
+    path: '/foo',
+    value: 'new'
   }
 };
 /** Define session token to pass in to Authorization Header later. */
@@ -102,7 +128,9 @@ describe('Test resize route', done => {
     request(app)
       .post('/api/resize')
       .set('Authorization', token)
-      .send(testInput.reqObj)
+      .send({
+        obj: testInput.jsonObj
+      })
       .expect(400)
       .end((err, res) => {
         expect(res.body.imgUrl).equals('Invalid URL.');
@@ -126,6 +154,52 @@ describe('Test resize route', done => {
     request(app)
       .post('/api/resize')
       .send(testInput.image)
+      .expect(401, done);
+  });
+});
+/** Test jsonpatch route. */
+describe('Test jsonpatch route', done => {
+  /** Status 200 on succesful add.
+   */
+  it('Status 200 on add patch', done => {
+    request(app)
+      .post('/api/jsonpatch')
+      .set('Authorization', token)
+      .send(testInput.jsonAdd)
+      .expect(200)
+      .end((err, res) => {
+        done();
+      });
+  });
+  /** Status 200 on succesful remove.
+   */
+  it('Status 200 on remove patch', done => {
+    request(app)
+      .post('/api/jsonpatch')
+      .set('Authorization', token)
+      .send(testInput.jsonRemove)
+      .expect(200)
+      .end((err, res) => {
+        done();
+      });
+  });
+  /** Status 200 on succesful replace.
+   */
+  it('Status 200 on replace patch', done => {
+    request(app)
+      .post('/api/jsonpatch')
+      .set('Authorization', token)
+      .send(testInput.jsonReplace)
+      .expect(200)
+      .end((err, res) => {
+        done();
+      });
+  });
+  /** Status 401 if unauthorized user tries to access th route.. */
+  it('Status 401 on unauthorized user', done => {
+    request(app)
+      .post('/api/jsonpatch')
+      .send(testInput.jsonAdd)
       .expect(401, done);
   });
 });

@@ -47,6 +47,7 @@ app.use(_passport2.default.initialize());
 /** Define API routes. */
 app.use('/api/auth', require('./services/auth').default);
 app.use('/api/resize', require('./services/resizer').default);
+app.use('/api/jsonpatch', require('./services/jsonpatch').default);
 
 /** Server listen to port. */
 app.listen(port, function () {

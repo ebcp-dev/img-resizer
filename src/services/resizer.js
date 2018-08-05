@@ -5,7 +5,6 @@ import express from 'express';
 import passport from 'passport';
 import axios from 'axios';
 import sharp from 'sharp';
-import jsonpatch from 'json-patch';
 const router = express.Router();
 
 /** Import validation. */

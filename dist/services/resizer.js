@@ -20,22 +20,18 @@ var _sharp = require('sharp');
 
 var _sharp2 = _interopRequireDefault(_sharp);
 
-var _jsonPatch = require('json-patch');
-
-var _jsonPatch2 = _interopRequireDefault(_jsonPatch);
-
 var _resizer = require('../validation/resizer');
 
 var _resizer2 = _interopRequireDefault(_resizer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var router = _express2.default.Router();
-
-/** Import validation. */
 /** @module src/services/resizer */
 
 /** Import dependencies. */
+var router = _express2.default.Router();
+
+/** Import validation. */
 
 
 /**
